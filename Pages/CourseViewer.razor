@@ -1,0 +1,62 @@
+@page "/course/{CourseId:int}"
+@inject ICourseService CourseService
+@inject IVideoService VideoService
+
+<h2>@course?.Title</h2>
+
+@if (currentVideo != null)
+{
+    <div class="video-player">
+        <video id="videoPlayer" controls @onended="OnVideoEnded">
+            <source src="@currentVideo.Url" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="video-progress">
+        <p>Progress: @currentVideoIndex / @course?.Videos.Count</p>
+        <button class="btn btn-primary" @onclick="NextVideo" disabled="@(currentVideoIndex >= course?.Videos.Count - 1)">Next Video</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int CourseId { get; set; }
+
+    private Course course;
+    private Video currentVideo;
+    private int currentVideoIndex = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        course = await CourseService.GetCourseAsync(CourseId);
+        await LoadVideo(0);
+    }
+
+    private async Task LoadVideo(int index)
+    {
+        if (course?.Videos != null && index < course.Videos.Count)
+        {
+            currentVideoIndex = index;
+            currentVideo = await VideoService.GetVideoAsync(course.Videos[index].Id);
+        }
+    }
+
+    private async Task OnVideoEnded()
+    {
+        await VideoService.MarkVideoCompletedAsync(currentVideo.Id);
+        if (currentVideoIndex < course?.Videos.Count - 1)
+        {
+            await LoadVideo(currentVideoIndex + 1);
+        }
+        else
+        {
+            // Course completed, show quiz or summary
+        }
+    }
+
+    private async Task NextVideo()
+    {
+        await LoadVideo(currentVideoIndex + 1);
+    }
+}

@@ -1,0 +1,53 @@
+@page "/admin/users"
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>User Management</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Role</td>
+                <td>
+                    <button @onclick="() => ResetPassword(user.Id)" class="btn btn-warning">Reset Password</button>
+                    <button @onclick="() => ViewProgress(user.Id)" class="btn btn-info">View Progress</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<User> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch users from the backend
+    }
+
+    private void ResetPassword(int userId)
+    {
+        // Implement password reset logic
+    }
+
+    private void ViewProgress(int userId)
+    {
+        // Implement view progress logic
+    }
+
+    public class User
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Role { get; set; }
+    }
+}

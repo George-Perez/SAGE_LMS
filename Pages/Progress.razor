@@ -1,0 +1,61 @@
+@page "/progress"
+
+<PageTitle>My Progress - Bariatric LMS</PageTitle>
+
+<h1>My Progress</h1>
+
+@if (progressData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="progress-summary">
+        <h2>Overall Progress: @progressData.OverallProgress%</h2>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: @progressData.OverallProgress%" aria-valuenow="@progressData.OverallProgress" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+
+    <h3>Course Progress</h3>
+    @foreach (var course in progressData.CourseProgress)
+    {
+        <div class="course-progress">
+            <h4>@course.Title</h4>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: @course.Progress%" aria-valuenow="@course.Progress" aria-valuemin="0" aria-valuemax="100">@course.Progress%</div>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private ProgressData progressData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // In a real application, this would fetch data from a backend service
+        progressData = new ProgressData
+        {
+            OverallProgress = 65,
+            CourseProgress = new List<CourseProgress>
+            {
+                new CourseProgress { Title = "Pre-Op Preparation", Progress = 100 },
+                new CourseProgress { Title = "Post-Op Recovery", Progress = 50 },
+                new CourseProgress { Title = "Nutrition Basics", Progress = 25 }
+            }
+        };
+    }
+
+    public class ProgressData
+    {
+        public int OverallProgress { get; set; }
+        public List<CourseProgress> CourseProgress { get; set; }
+    }
+
+    public class CourseProgress
+    {
+        public string Title { get; set; }
+        public int Progress { get; set; }
+    }
+}

@@ -1,0 +1,43 @@
+@page "/admin/analytics"
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>Analytics</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Overall Course Completion</h4>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: @overallCompletion%" aria-valuenow="@overallCompletion" aria-valuemin="0" aria-valuemax="100">@overallCompletion%</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4>Active Users</h4>
+        <p>@activeUsers users active in the last 30 days</p>
+    </div>
+</div>
+
+<h4>Course-specific Analytics</h4>
+@foreach (var course in courseAnalytics)
+{
+    <h5>@course.Title</h5>
+    <p>Completion Rate: @course.CompletionRate%</p>
+    <p>Average Test Score: @course.AverageTestScore%</p>
+}
+
+@code {
+    private int overallCompletion;
+    private int activeUsers;
+    private List<CourseAnalytics> courseAnalytics;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch analytics data from the backend
+    }
+
+    public class CourseAnalytics
+    {
+        public string Title { get; set; }
+        public int CompletionRate { get; set; }
+        public int AverageTestScore { get; set; }
+    }
+}

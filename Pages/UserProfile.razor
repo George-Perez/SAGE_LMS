@@ -1,0 +1,48 @@
+@page "/profile"
+@attribute [Authorize]
+
+<h3>User Profile</h3>
+
+<div class="form-group">
+    <label for="avatar">Avatar:</label>
+    <InputFile OnChange="HandleFileSelected" />
+</div>
+
+<div class="form-group">
+    <label for="password">New Password:</label>
+    <InputText id="password" @bind-Value="newPassword" type="password" class="form-control" />
+</div>
+
+<button @onclick="UpdateProfile" class="btn btn-primary">Update Profile</button>
+
+<h4>Daily Log</h4>
+<div class="form-group">
+    <label for="workout">Workout Status:</label>
+    <InputText id="workout" @bind-Value="workoutStatus" class="form-control" />
+</div>
+<div class="form-group">
+    <label for="meals">Meals:</label>
+    <InputTextArea id="meals" @bind-Value="meals" class="form-control" />
+</div>
+<button @onclick="LogDailyActivity" class="btn btn-secondary">Log Daily Activity</button>
+
+@code {
+    private string newPassword;
+    private string workoutStatus;
+    private string meals;
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        // Implement avatar upload logic
+    }
+
+    private async Task UpdateProfile()
+    {
+        // Implement profile update logic
+    }
+
+    private async Task LogDailyActivity()
+    {
+        // Implement daily activity logging logic
+    }
+}

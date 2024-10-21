@@ -1,0 +1,72 @@
+@page "/admin/courses"
+@attribute [Authorize(Roles = "ContentAdmin")]
+
+<h3>Course Management</h3>
+
+<button @onclick="AddNewCourse" class="btn btn-primary">Add New Course</button>
+
+@if (courses != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Pass Rate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in courses)
+            {
+                <tr>
+                    <td>@course.Title</td>
+                    <td>@course.Description</td>
+                    <td>@course.PassRate%</td>
+                    <td>
+                        <button @onclick="() => EditCourse(course.Id)" class="btn btn-secondary">Edit</button>
+                        <button @onclick="() => ManageVideos(course.Id)" class="btn btn-info">Manage Videos</button>
+                        <button @onclick="() => ManageTests(course.Id)" class="btn btn-warning">Manage Tests</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Course> courses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch courses from the backend
+    }
+
+    private void AddNewCourse()
+    {
+        // Implement add new course logic
+    }
+
+    private void EditCourse(int courseId)
+    {
+        // Implement edit course logic
+    }
+
+    private void ManageVideos(int courseId)
+    {
+        // Implement manage videos logic
+    }
+
+    private void ManageTests(int courseId)
+    {
+        // Implement manage tests logic
+    }
+
+    public class Course
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public int PassRate { get; set; }
+    }
+}
